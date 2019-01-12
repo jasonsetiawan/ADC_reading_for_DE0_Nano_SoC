@@ -1,0 +1,61 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "SCK",
+					"strict" : false
+				},
+				{
+					"name" : "CONVST",
+					"strict" : false
+				},
+				{
+					"name" : "SDI",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[0]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[1]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[2]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[3]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[4]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[5]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[6]",
+					"strict" : false
+				},
+				{
+					"name" : "led_out[7]",
+					"strict" : false
+				},
+				{
+					"name" : "clk_50Mhz",
+					"strict" : false
+				},
+				{
+					"name" : "SDO",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
