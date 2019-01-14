@@ -53,6 +53,7 @@ signal thousands : std_logic_vector (3 downto 0);
 signal hundreds : std_logic_vector (3 downto 0);
 signal tens : std_logic_vector (3 downto 0);
 signal ones : std_logic_vector (3 downto 0);
+signal cnt : integer range 0 to 11 := 0;
 
 -- UART Signal
 signal send_cnt : integer range 0 to 5;
@@ -124,7 +125,7 @@ begin
 							hundreds <= (others => '0');
 							thousands <= (others => '0');
 							bcd <= (others => '0');
-							counter <= 0;
+							cnt <= 0;
 							prepare_state_sig <= check;
 						when check =>
 							--ones
@@ -145,15 +146,15 @@ begin
 							end if;
 							prepare_state_sig <= shift;
 						when shift =>
-							if counter <= 10 then 
-								counter <= counter + 1;
+							if cnt <= 10 then 
+								cnt <= cnt + 1;
 								prepare_state_sig <= check;
 								bcd <= bcd(14 downto 0) & adc_data_modified(11);
 								adc_data_modified <= adc_data_modified(10 downto 0) & '0';
 							else 
 								bcd <= bcd(14 downto 0) & adc_data_modified(11);
 								adc_data_modified <= adc_data_modified(10 downto 0) & '0';
-								counter <= 0;
+								cnt <= 0;
 								prepare_state_sig <= save;
 							end if;
 						when save =>
