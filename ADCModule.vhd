@@ -1,3 +1,9 @@
+---------------------------------------------------------------------------------------------------------------------------------------
+-- The ADC interfacing to UART for DE0 Nano SoC Altera using FPGA only.
+-- The data will be sent with this format: header, comma, thousands, hundreds, tens, ones (until 8 channel), new line.
+-- Created by : Jason D. Setiawan, Bayu A. Pamungkas, Ubaid I. Najib N.F.
+---------------------------------------------------------------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -9,15 +15,15 @@ entity ADCModule is
 		clk_50Mhz : in std_logic;	-- Connect to Clock50MHz - V11
 		
 		-- For ADC-SPI Interface with Main Processor
-		SCK : out std_logic; 	-- Connect to SCK - V10
-		CONVST : out std_logic; -- Connect to CONVST - U9
+		SCK : out std_logic; 		-- Connect to SCK - V10
+		CONVST : out std_logic; 	-- Connect to CONVST - U9
 		SDI : out std_logic;		-- Connect to SDI - AC4
 		SDO : in std_logic;		-- Connect to SDO - AD4
 		
 		-- For Main Processor interface with PC through UART
 		tx_out : out std_logic; 	-- Connect to GPIO_0[1] - AF7 
 		
-		-- Testbench Parameter
+		-- Testbench Parameter (Only for checking)
 --		led_out : out std_logic_vector (7 downto 0);
 		clk_sck : out std_logic
 --		state : out std_logic_vector (3 downto 0)
@@ -27,7 +33,6 @@ end entity;
 architecture spiMaster_arc of ADCModule is
 
 -- Channel multiplexer
-
 signal channel_index : integer range 0 to 7 := 0;
 
 -- Multiplekser State List
@@ -176,9 +181,9 @@ begin
 							dout_index <= dout_index + 1;	
 						end if;	
 
-					when prepare =>
---						state <= "0001";
-						-- 1. Transforming the 12 bit parallel data read into BCD
+					-- Transforming the 12 bit parallel data read into BCD		
+					when prepare => 
+--						state <= "0001";						
 						case prepare_state_sig is
 							when idle =>
 								-- Since the ADC transmit MSB first, we need to reverse the sequence.
@@ -229,8 +234,7 @@ begin
 								adc_state_sig <= sending;
 								send_cnt <= 0;
 						end case;					
-						-- 2. Send with this format: header, comma, thousands, hundreds, tens, ones, new line.					
-						
+							
 					when sending => -- Data in : 1 byte, 7 clocking, out: 10 bit, 7clocking
 --						state <= "0010";
 						-- Send the transformed BCD with provided format through UART
@@ -280,7 +284,8 @@ begin
 							end case;
 						else
 							send_cnt <= 0;
-						end if;						
+						end if;	
+							
 					when nap =>
 --						state <= "0111";
 						-- reset all the value back to zero.
